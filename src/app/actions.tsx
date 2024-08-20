@@ -138,8 +138,17 @@ export async function getSecret(secretKey: string, id: string) {
         data: {
             secret: decrypted,
             expireOnOpen: secret.expireOnOpen,
-            expireAfter: secret.expireAfter
+            expireAfter: secret.expireAfter,
+            id: secret._id.toString()
         },
         error: null
+    }
+}
+
+export async function deleteSecret( id: string ) {
+    const secret = await SecretSchema.findById(id);
+    if (secret && secret.expireOnOpen) {
+        secret.isOpened = true;
+        await secret.save();
     }
 }

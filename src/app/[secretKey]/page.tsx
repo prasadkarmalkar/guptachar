@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { getSecret } from '../actions';
+import { deleteSecret, getSecret } from '../actions';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -8,7 +8,7 @@ import Link from 'next/link';
 type SecretDataState =
 	| { error: string; data: null }
 	| {
-			data: { secret: string; expireOnOpen: any; expireAfter: any };
+			data: { secret: string; expireOnOpen: any; expireAfter: any, id: string};
 			error: null;
 	  };
 
@@ -26,6 +26,12 @@ function Page({ params }: { params: { secretKey: string } }) {
 		// Call the async function inside useEffect
 		initialSetData();
 	}, [searchParams, params.secretKey]); // Add dependencies to the dependency array
+
+	useEffect(()=>{
+		if(secretData?.data) {
+			deleteSecret(secretData?.data?.id);
+		}
+	}, [secretData])
 
 	return (
 		<main>
