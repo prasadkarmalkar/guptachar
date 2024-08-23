@@ -33,6 +33,7 @@ function ShareForm() {
 					id='secret'
 					rows={5}
 					required
+					disabled={state.data ? true : false} 
 				/>
 				<span className='text-red-500 text-sm text-start'>{state.errors?.secret}</span>
 			</div>
@@ -43,6 +44,7 @@ function ShareForm() {
 						name='expiry'
 						id='expiry'
 						className='cursor-pointer bg-black border-gray-700 border rounded-md px-1 pr-10 py-1 '
+						disabled={state.data ? true : false}
 					>
 						<option value='1'>1 day</option>
 						<option value='3'>3 days</option>
@@ -58,6 +60,7 @@ function ShareForm() {
 							id='expire-open'
 							value='open-expire'
 							className='sr-only peer'
+							disabled={state.data ? true : false}
 						/>
 						<div className="relative w-11 h-6 bg-gray-200 border-gray-700 border peer-focus:outline-none rounded-full peer dark:bg-black peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-700"></div>
 					</label>
@@ -67,8 +70,8 @@ function ShareForm() {
 			<p className='text-red-500 text-sm text-start mt-1'>{state.errors?.open_expire}</p>
 			{state.data ?
 			<div className='mt-10 flex justify-evenly items-center gap-3 px-4 py-2 rounded-md bg-gray-900 bg-opacity-50 border border-gray-700'>
-				<a href={window.location.href + state.data.secretKey + '/?id=' + state.data.id} target="_blank" >{(window.location.href + state.data.secretKey + '/?id="' + state.data.id + '"').slice(0, 40)}...</a>
-				<div onClick={()=>{window.navigator.clipboard.writeText(window.location.href + state.data.secretKey + '/?id="' + state.data.id + '"'); setCopied(true)}} className='cursor-pointer p-2 rounded-md border border-gray-700 bg-black'>{copied ? 'Copied' : 'Copy'}</div>
+				<a href={window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey} target="_blank" >{(window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey).slice(0, 40)}...</a>
+				<div onClick={()=>{window.navigator.clipboard.writeText(window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey); setCopied(true)}} className='cursor-pointer p-2 rounded-md border border-gray-700 bg-black'>{copied ? 'Copied' : 'Copy'}</div>
 			</div> : <input
 				type='submit'
 				value={pending ? `Generating Link...` : `Generate Link`}

@@ -12,20 +12,20 @@ type SecretDataState =
 			error: null;
 	  };
 
-function Page({ params }: { params: { secretKey: string } }) {
+function Page({ params }: { params: { id: string } }) {
 	const searchParams = useSearchParams();
 	const [secretData, setSecretData] = useState<SecretDataState | null>(null);
 
 	useEffect(() => {
 		async function initialSetData() {
-			const idObject = searchParams.get('id');
-			const id = idObject ? idObject : '';
-			const decryptedSecret = await getSecret(params.secretKey, id);
+			const secretKeyObject = searchParams.get('secretKey');
+			const secretKey = secretKeyObject ? secretKeyObject : '';
+			const decryptedSecret = await getSecret(params.id, secretKey);
 			setSecretData(decryptedSecret);
 		}
 		// Call the async function inside useEffect
 		initialSetData();
-	}, [searchParams, params.secretKey]); // Add dependencies to the dependency array
+	}, [searchParams, params.id]); // Add dependencies to the dependency array
 
 	useEffect(()=>{
 		if(secretData?.data) {

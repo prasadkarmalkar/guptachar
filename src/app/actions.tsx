@@ -111,7 +111,7 @@ export async function decrypt(hash: string, secretKey: Buffer, iv: string) {
 }
 
 
-export async function getSecret(secretKey: string, id: string) {
+export async function getSecret(id: string, secretKey: string) {
     const secret = await SecretSchema.findById(id);
     if (!secret) {
         return {
