@@ -16,7 +16,7 @@ const initialState = {
 
 function ShareForm() {
 	const [state, formAction, isPending] = useFormState(createSecret, initialState);
-	const [copied, setCopied] = useState(false);
+	const [copied, setCopied] = useState(false); 
 	return (
 		<form
 			action={formAction}
