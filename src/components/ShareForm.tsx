@@ -15,7 +15,7 @@ const initialState = {
 };
 
 function ShareForm() {
-	const [state, formAction, pending] = useFormState(createSecret, initialState);
+	const [state, formAction, isPending] = useFormState(createSecret, initialState);
 	const [copied, setCopied] = useState(false);
 	return (
 		<form
@@ -74,8 +74,8 @@ function ShareForm() {
 				<div onClick={()=>{window.navigator.clipboard.writeText(window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey); setCopied(true)}} className='cursor-pointer p-2 rounded-md border border-gray-700 bg-black'>{copied ? 'Copied' : 'Copy'}</div>
 			</div> : <input
 				type='submit'
-				value={pending ? `Generating Link...` : `Generate Link`}
-				disabled={pending}
+				value={isPending ? `Generating Link...` : `Generate Link`}
+				disabled={isPending}
 				className='mt-10 rounded-md border bg-gray-900 border-gray-700 px-5 py-2 hover:cursor-pointer hover:bg-black'
 			/>}
 
