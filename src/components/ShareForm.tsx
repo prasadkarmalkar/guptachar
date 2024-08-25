@@ -1,7 +1,7 @@
 "use client"
 import { createSecret } from '@/app/actions';
 import React, { useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 
 const initialState = {
 	errors: {
@@ -14,8 +14,20 @@ const initialState = {
 	data: null,
 };
 
+const SubmitButton = () => {
+	const { pending } = useFormStatus();
+	return(
+		<input
+		type='submit'
+		value={pending ? `Generating Link...` : `Generate Link`}
+		disabled={pending}
+		className='mt-10 rounded-md border bg-gray-900 border-gray-700 px-5 py-2 hover:cursor-pointer hover:bg-black'
+	/>
+	)
+}
+
 function ShareForm() {
-	const [state, formAction, isPending] = useFormState(createSecret, initialState);
+	const [state, formAction] = useFormState(createSecret, initialState);
 	const [copied, setCopied] = useState(false); 
 	return (
 		<form
@@ -72,12 +84,7 @@ function ShareForm() {
 			<div className='mt-10 flex justify-evenly items-center gap-3 px-4 py-2 rounded-md bg-gray-900 bg-opacity-50 border border-gray-700'>
 				<a href={window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey} target="_blank" >{(window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey).slice(0, 40)}...</a>
 				<div onClick={()=>{window.navigator.clipboard.writeText(window.location.href + state.data.id + '/?secretKey=' + state.data.secretKey); setCopied(true)}} className='cursor-pointer p-2 rounded-md border border-gray-700 bg-black'>{copied ? 'Copied' : 'Copy'}</div>
-			</div> : <input
-				type='submit'
-				value={isPending ? `Generating Link...` : `Generate Link`}
-				disabled={isPending}
-				className='mt-10 rounded-md border bg-gray-900 border-gray-700 px-5 py-2 hover:cursor-pointer hover:bg-black'
-			/>}
+			</div> :<SubmitButton />}
 
 			{state?.errors?.external && <p className='text-red-500 mt-2'>{state.errors.external}</p>}
 
